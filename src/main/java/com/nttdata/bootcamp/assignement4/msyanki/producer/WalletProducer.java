@@ -5,6 +5,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.util.concurrent.ListenableFutureCallback;
 
 
 @Component
@@ -14,7 +18,7 @@ public class WalletProducer {
 
     private final KafkaTemplate<String, WalletModel> kafkaTemplate;
 
-    @Value(value = "${kafka.topic.balance.name}")
+    @Value(value = "${kafka.topic.wallet.name}")
     private String topic;
 
     public void sendMessage(WalletModel balanceModel) {
@@ -29,7 +33,7 @@ public class WalletProducer {
 
             @Override
             public void onFailure(Throwable ex) {
-                log.error("Something went wrong with the balanceModel {} ", balanceModel);
+                log.error("Something went wrong with the walletModel {} ", balanceModel);
             }
         });
     }

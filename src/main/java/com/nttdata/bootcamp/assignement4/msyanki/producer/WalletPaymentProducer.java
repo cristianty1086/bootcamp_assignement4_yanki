@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.util.concurrent.ListenableFutureCallback;
 
 @Component
 @RequiredArgsConstructor
@@ -15,7 +17,7 @@ public class WalletPaymentProducer {
 
     private final KafkaTemplate<String, WalletPaymentModel> kafkaTemplate;
 
-    @Value(value = "${kafka.topic.balance.name}")
+    @Value(value = "${kafka.topic.wallet.payment.name}")
     private String topic;
 
     public void sendMessage(WalletPaymentModel balanceModel) {
@@ -30,7 +32,7 @@ public class WalletPaymentProducer {
 
             @Override
             public void onFailure(Throwable ex) {
-                log.error("Something went wrong with the balanceModel {} ", balanceModel);
+                log.error("Something went wrong with the walletPaymentModel {} ", balanceModel);
             }
         });
     }
